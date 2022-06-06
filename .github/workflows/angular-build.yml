@@ -10,17 +10,25 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
+    env : 
+        working-directory: ./angular-workflow-demo-app
+    
     steps:
+      
       - uses: actions/checkout@v2
+      
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          
       - name : Install Dependencies
-        working-directory: ./angular-workflow-demo-app
+        working-directory: ${{ env.working-directory }}
         run: npm install
+        
       - name: Build 
         run: npm run build
+        
       - name: Testing 
         run: npm test
