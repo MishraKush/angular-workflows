@@ -19,7 +19,7 @@ jobs:
           node-version: 14
       - name : Install Dependencies
         working-directory: ./angular-workflow-demo-app
-        run: npm ci
+        run: npm install
       - name: Build 
         run: npm run build
       - name: Testing 
