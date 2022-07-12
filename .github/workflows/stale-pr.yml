@@ -1,0 +1,34 @@
+name: Trigger Stale PR Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      batchSize:
+        description: 'Number of repos per batch'     
+        required: true
+        default: '5'
+      delayBetweenBatch:
+        description: 'Seconds to pause between batches'
+        required: true
+        default: '360'
+      team:
+        description: 'The team with which to filter the list of repos on (which are accessible by the PAT)'
+        required: true
+        default: iX
+      repoName:
+        description: 'Repo to sync the template files to. Leave blank to sync to all repos. Use partial name to sync to repos that contains the string'
+        required: false
+
+jobs:
+  trigger-stale-pr-action:
+    runs-on: [self-hosted, linux, research]
+  
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Dependencies 
+      run: |
+        sudo apt-get install -y python3-pip || true
+        pip3 install pygithub
+    
+    - name: Run Stale PR Workflow
+      run: python3 -u ./stale_pr/trigger_staleprworkflow.py ${{ secrets.IX_ACTIONS_PAT }} ${{ github.event.inputs.team }} ${{ github.event.inputs.delayBetweenBatch }} ${{ github.event.inputs.batchSize }} "${{ github.event.inputs.repoName }}"
