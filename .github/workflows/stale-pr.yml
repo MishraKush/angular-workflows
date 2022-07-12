@@ -20,7 +20,7 @@ on:
 
 jobs:
   trigger-stale-pr-action:
-    runs-on: [self-hosted, linux, research]
+    runs-on: ubuntu-latest
   
     steps:
     - uses: actions/checkout@v2
